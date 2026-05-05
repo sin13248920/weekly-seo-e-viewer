@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>2026년 5월호</title>
+<title>PDF 뷰어</title>
 
 <style>
 body {
@@ -12,20 +12,20 @@ body {
   background: #f4f4f4;
 }
 
+/* 전체 가운데 */
 .viewer-wrapper {
   display: flex;
   justify-content: center;
   padding: 20px;
 }
 
+/* PDF 박스 */
 .viewer-card {
   background: white;
   padding: 20px;
   border-radius: 12px;
   max-width: 1100px;
   width: 100%;
-  overflow: hidden;
-
   position: relative;
 }
 
@@ -34,31 +34,26 @@ body {
   display: flex;
   justify-content: center;
   gap: 10px;
-  transform-origin: center center;
+  transform-origin: center;
   touch-action: none;
-
-  position: relative;
-  z-index: 1;
 }
 
 canvas {
   width: 100%;
   max-width: 48%;
-  background: #fff;
+  background: white;
   border-radius: 8px;
 }
 
-/* 컨트롤 */
+/* 컨트롤 (항상 PDF 위) */
 .controls {
   text-align: center;
   margin-top: 12px;
   position: relative;
   z-index: 10;
-  background: white;
-  padding-top: 10px;
 }
 
-.controls button {
+button {
   margin: 5px;
   padding: 8px 14px;
   border: none;
@@ -67,12 +62,13 @@ canvas {
   cursor: pointer;
 }
 
+/* 줌 버튼 영역 */
 #zoomControls {
   margin-top: 10px;
   display: none;
 }
 
-/* 🔥 로딩 오버레이 (PDF 영역만) */
+/* 🔥 로딩 (PDF 영역만 덮음) */
 #loading {
   position: absolute;
   inset: 0;
@@ -80,15 +76,14 @@ canvas {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 18px;
   font-weight: bold;
+  font-size: 18px;
   z-index: 999;
 }
 
-/* 🔥 로딩 중 UI 비활성화 */
-.viewer-card.loading {
+/* 로딩 중 클릭 막기 */
+.loading-block {
   pointer-events: none;
-  user-select: none;
 }
 
 /* 모바일 */
@@ -105,12 +100,9 @@ canvas {
 
 <body>
 
-<div id="header"></div>
-
 <div class="viewer-wrapper">
-  <div class="viewer-card loading" id="viewerCard">
+  <div class="viewer-card loading-block" id="viewerCard">
 
-    <!-- 🔥 PDF 로딩 오버레이 (카드 내부만) -->
     <div id="loading">PDF 로딩중...</div>
 
     <div class="page-container" id="pageContainer">
@@ -126,14 +118,12 @@ canvas {
         <button onclick="nextPage()">다음 ▶</button>
       </div>
 
-      <br>
-
       <button id="zoomBtn" onclick="enableZoom()">🔍 돋보기</button>
-      <button id="resetBtn" onclick="disableZoom()" style="display:none;">❌ 원래대로</button>
+      <button id="resetBtn" onclick="disableZoom()" style="display:none;">❌ 종료</button>
 
       <div id="zoomControls">
-        <button onclick="zoomIn()">➕ 확대</button>
-        <button onclick="zoomOut()">➖ 축소</button>
+        <button onclick="zoomIn()">➕</button>
+        <button onclick="zoomOut()">➖</button>
       </div>
 
     </div>
@@ -141,92 +131,89 @@ canvas {
   </div>
 </div>
 
-<div id="footer"></div>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 
 <script>
-fetch("components/header.html").then(r=>r.text()).then(d=>header.innerHTML=d);
-fetch("components/footer.html").then(r=>r.text()).then(d=>footer.innerHTML=d);
-
 const url = "https://raw.githubusercontent.com/sin13248920/weekly-seo-viewer/main/test01.pdf";
 
-let pdfDoc = null;
-let currentPage = 1;
+let pdfDoc;
+let page = 1;
 let zoomMode = false;
 
 let scale = 1;
 let x = 0, y = 0;
 
-const loadingEl = document.getElementById("loading");
-const viewerCard = document.getElementById("viewerCard");
+/* 요소 */
+const card = document.getElementById("viewerCard");
+const loading = document.getElementById("loading");
+const container = document.getElementById("pageContainer");
 
+/* PDF 로드 */
 pdfjsLib.getDocument(url).promise.then(pdf => {
   pdfDoc = pdf;
-
-  // 🔥 로딩 해제
-  loadingEl.style.display = "none";
-  viewerCard.classList.remove("loading");
-
-  renderPages();
+  loading.style.display = "none";
+  card.classList.remove("loading-block");
+  render();
 });
 
 /* 렌더 */
-function renderPages() {
-  if (window.innerWidth < 768) renderSingle(currentPage);
-  else currentPage === 1 ? renderSingle(1) : renderDouble(currentPage, currentPage+1);
+function render() {
+  if (window.innerWidth < 768) {
+    renderOne(page);
+  } else {
+    renderTwo(page, page + 1);
+  }
 }
 
-function renderSingle(n) {
+function renderOne(n) {
   rightCanvas.style.display = "none";
-  renderPage(n, leftCanvas);
+  draw(n, leftCanvas);
   pageInfo.textContent = `${n} / ${pdfDoc.numPages}`;
 }
 
-function renderDouble(l, r) {
+function renderTwo(l, r) {
   rightCanvas.style.display = "block";
-  renderPage(l, leftCanvas);
-  if (r <= pdfDoc.numPages) renderPage(r, rightCanvas);
-  pageInfo.textContent = `${l}-${Math.min(r,pdfDoc.numPages)} / ${pdfDoc.numPages}`;
+  draw(l, leftCanvas);
+  if (r <= pdfDoc.numPages) draw(r, rightCanvas);
+  pageInfo.textContent = `${l}-${Math.min(r, pdfDoc.numPages)} / ${pdfDoc.numPages}`;
 }
 
-function renderPage(n, canvas) {
+function draw(n, canvas) {
   pdfDoc.getPage(n).then(page => {
     const ctx = canvas.getContext("2d");
-    const viewport = page.getViewport({ scale: 1.5 });
+    const view = page.getViewport({ scale: 1.5 });
 
-    canvas.height = viewport.height;
-    canvas.width = viewport.width;
+    canvas.width = view.width;
+    canvas.height = view.height;
 
-    page.render({ canvasContext: ctx, viewport });
+    page.render({ canvasContext: ctx, viewport: view });
   });
 }
 
-/* 페이지 이동 */
+/* 페이지 */
 function nextPage() {
   if (zoomMode) return;
 
-  if (window.innerWidth < 768) currentPage++;
-  else currentPage = (currentPage === 1) ? 2 : currentPage + 2;
+  if (window.innerWidth < 768) page++;
+  else page = (page === 1) ? 2 : page + 2;
 
-  if (currentPage > pdfDoc.numPages) return;
-  renderPages();
+  if (page > pdfDoc.numPages) return;
+  render();
 }
 
 function prevPage() {
   if (zoomMode) return;
 
-  if (window.innerWidth < 768) currentPage--;
-  else currentPage = (currentPage === 2) ? 1 : currentPage - 2;
+  if (window.innerWidth < 768) page--;
+  else page = (page === 2) ? 1 : page - 2;
 
-  if (currentPage < 1) currentPage = 1;
-  renderPages();
+  if (page < 1) page = 1;
+  render();
 }
 
 /* 돋보기 */
 function enableZoom() {
   zoomMode = true;
-
   zoomBtn.style.display = "none";
   resetBtn.style.display = "inline-block";
   navButtons.style.display = "none";
@@ -235,7 +222,6 @@ function enableZoom() {
 
 function disableZoom() {
   zoomMode = false;
-
   zoomBtn.style.display = "inline-block";
   resetBtn.style.display = "none";
   navButtons.style.display = "block";
@@ -244,50 +230,96 @@ function disableZoom() {
   scale = 1;
   x = 0;
   y = 0;
-  updateTransform();
+  update();
 }
 
-/* 확대 */
+/* 줌 */
 function zoomIn() {
   if (!zoomMode) return;
   scale = Math.min(scale + 0.2, 3);
-  updateTransform();
+  update();
 }
 
 function zoomOut() {
   if (!zoomMode) return;
   scale = Math.max(scale - 0.2, 1);
-  updateTransform();
+  update();
 }
 
-function updateTransform() {
-  pageContainer.style.transform =
+function update() {
+  container.style.transform =
     `translate(${x}px, ${y}px) scale(${scale})`;
 }
 
 /* 드래그 */
-let isMouseDown = false;
-let startX = 0, startY = 0;
+let down = false;
+let sx = 0, sy = 0;
 
-pageContainer.addEventListener("mousedown", e => {
+container.addEventListener("mousedown", e => {
   if (!zoomMode) return;
-
-  isMouseDown = true;
-  startX = e.clientX - x;
-  startY = e.clientY - y;
+  down = true;
+  sx = e.clientX - x;
+  sy = e.clientY - y;
 });
 
 window.addEventListener("mousemove", e => {
-  if (!zoomMode || !isMouseDown) return;
-
-  x = e.clientX - startX;
-  y = e.clientY - startY;
-  updateTransform();
+  if (!zoomMode || !down) return;
+  x = e.clientX - sx;
+  y = e.clientY - sy;
+  update();
 });
 
-window.addEventListener("mouseup", () => {
-  isMouseDown = false;
+window.addEventListener("mouseup", () => down = false);
+
+/* 🔥 모바일 pinch (수정 핵심) */
+let startDist = null;
+let startScale = 1;
+let drag = false;
+let tx = 0, ty = 0;
+
+container.addEventListener("touchstart", e => {
+  if (!zoomMode) return;
+
+  if (e.touches.length === 2) {
+    const dx = e.touches[0].clientX - e.touches[1].clientX;
+    const dy = e.touches[0].clientY - e.touches[1].clientY;
+    startDist = Math.sqrt(dx*dx + dy*dy);
+    startScale = scale;
+  }
+
+  if (e.touches.length === 1) {
+    drag = true;
+    tx = e.touches[0].clientX - x;
+    ty = e.touches[0].clientY - y;
+  }
 });
+
+container.addEventListener("touchmove", e => {
+  if (!zoomMode) return;
+
+  if (e.touches.length === 2 && startDist) {
+    const dx = e.touches[0].clientX - e.touches[1].clientX;
+    const dy = e.touches[0].clientY - e.touches[1].clientY;
+    const dist = Math.sqrt(dx*dx + dy*dy);
+
+    scale = Math.max(1, Math.min(3, startScale * (dist / startDist)));
+    update();
+  }
+
+  if (e.touches.length === 1 && drag) {
+    x = e.touches[0].clientX - tx;
+    y = e.touches[0].clientY - ty;
+    update();
+  }
+});
+
+container.addEventListener("touchend", () => {
+  drag = false;
+  startDist = null;
+});
+
+/* resize */
+window.addEventListener("resize", render);
 </script>
 
 </body>
