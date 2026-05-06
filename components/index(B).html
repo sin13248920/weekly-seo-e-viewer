@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>월간서오 e뷰어</title>
+
+<style>
+html, body {
+  margin: 0;
+  height: 100%;
+  background: #f5f5f5;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+#app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+}
+
+/* CONTENT */
+.content {
+  flex: 1;
+}
+
+/* 카드 영역 */
+.grid {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 60px;
+  min-height: 60vh;
+  padding: 40px 0 80px 0;
+}
+
+.card {
+  width: 200px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  position: relative;
+}
+
+.card:hover {
+  transform: scale(1.08);
+}
+
+.card:active {
+  transform: scale(0.97);
+}
+
+.card img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.card p {
+  text-align: center;
+  margin-top: 8px;
+}
+
+/* 배지 */
+.badge, .badge-coming {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 4px 8px;
+  font-size: 12px;
+  color: white;
+  border-radius: 8px;
+}
+
+.badge { background: red; }
+.badge-coming { background: gray; }
+
+/* 🔥 모바일 대응 */
+@media (max-width: 768px) {
+
+  .grid {
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .card {
+    width: 80%;
+    max-width: 320px;
+  }
+
+}
+
+/* =========================
+   팝업 스타일
+========================= */
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 9999;
+}
+
+.popup-box {
+  width: 90%;
+  max-width: 400px;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+
+  box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+}
+
+.popup-box img {
+  width: 100%;
+  display: block;
+}
+
+.popup-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 10px 12px;
+  font-size: 13px;
+}
+
+.popup-actions button {
+  padding: 6px 12px;
+  border: none;
+  background: #333;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+@media (max-width: 480px) {
+  .popup-box {
+    max-width: 90%;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div id="app">
+
+  <!-- HEADER -->
+  <div id="header"></div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <div class="grid">
+
+      <div class="card" onclick="location.href='202605.html'">
+        <div class="badge">최신호</div>
+        <img src="https://drive.google.com/thumbnail?id=1hk7NpBIfWI06E5XDO2oZi5J0ZSnydCk5&sz=w1000">
+        <p>2026년 5월호</p>
+      </div>
+
+      <div class="card" onclick="location.href='202606.html'">
+        <div class="badge-coming">출간예정</div>
+        <img src="https://drive.google.com/thumbnail?id=1OSbIGt3ZwVDYecxrVhHrB_v8R-oVirsd&sz=w1000">
+        <p>2026년 6월호</p>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div id="footer"></div>
+
+</div>
+
+<!-- 팝업 -->
+<div id="popup" class="popup">
+  <div class="popup-box">
+
+    <img src="https://drive.google.com/thumbnail?id=1tVZH5nQd35ocOKUahALRxHuyL3qhh52F&sz=w1000">
+
+    <div class="popup-actions">
+      <label>
+        <input type="checkbox" id="todayClose">
+        오늘 하루 보지 않기
+      </label>
+
+      <button onclick="closePopup()">닫기</button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+/* =========================
+   헤더 / 푸터 불러오기
+========================= */
+fetch("components/header.html")
+  .then(r => r.text())
+  .then(d => document.getElementById("header").innerHTML = d);
+
+fetch("components/footer.html")
+  .then(r => r.text())
+  .then(d => document.getElementById("footer").innerHTML = d);
+
+
+/* =========================
+   팝업 로직
+========================= */
+const popupKey = "popupHide";
+
+/* 페이지 로드시 */
+window.addEventListener("load", () => {
+  const saved = localStorage.getItem(popupKey);
+
+  if (saved) {
+    const now = new Date().getTime();
+
+    if (now < saved) {
+      document.getElementById("popup").style.display = "none";
+    } else {
+      localStorage.removeItem(popupKey);
+    }
+  }
+});
+
+/* 팝업 체크박스 */
+window.onkeydown = function() {
+    var keycode = event.keyCode;
+    if (keycode == 18) {
+        localStorage.removeItem(popupKey);
+    }
+}
+
+/* 닫기 */
+function closePopup() {
+  const checkbox = document.getElementById("todayClose");
+
+  if (checkbox.checked) {
+    const now = new Date().getTime();
+    const tomorrow = now + (24 * 60 * 60 * 1000);
+
+    localStorage.setItem(popupKey, tomorrow);
+  }
+
+  document.getElementById("popup").style.display = "none";
+}
+</script>
+
+</body>
+</html>
+
+<!-- refresh -->
+<!-- deploy reset -->
+<!-- rebuild -->
