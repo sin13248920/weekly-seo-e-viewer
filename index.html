@@ -171,6 +171,63 @@ html, body {
 }
 
 /* =========================
+b
+========================= */
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 9999;
+}
+
+.popup-box {
+  width: 90%;
+  max-width: 400px;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+
+  box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+}
+
+.popup-box img {
+  width: 100%;
+  display: block;
+}
+
+.popup-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 10px 12px;
+  font-size: 13px;
+}
+
+.popup-actions button {
+  padding: 6px 12px;
+  border: none;
+  background: #333;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+@media (max-width: 480px) {
+  .popup-box {
+    max-width: 90%;
+  }
+}
+
+/* =========================
 a
 ========================= */
 .notice {
@@ -351,7 +408,6 @@ a
 
     </div>
 
-            <!-- 📢 공지 영역 -->
     <div class="notice">
       <div class="notice-header">
         📢 공지사항
@@ -373,12 +429,67 @@ a
 
   </div>
 
+  <!-- 팝업 -->
+<div id="popup" class="popup">
+  <div class="popup-box">
+
+    <img src="components/local.png">
+
+    <div class="popup-actions">
+      <label>
+        <input type="checkbox" id="todayClose">
+        18세 이상입니다.
+      </label>
+
+      <button onclick="closePopup()">확인</button>
+    </div>
+
+  </div>
+</div>
+
   <!-- FOOTER -->
   <div id="footer"></div>
 
 </div>
 
 <script>
+
+const popupKey = "popupHide";
+
+window.addEventListener("load", () => {
+  const saved = localStorage.getItem(popupKey);
+
+  if (saved) {
+    const now = new Date().getTime();
+
+    if (now < saved) {
+      document.getElementById("popup").style.display = "none";
+    } else {
+      localStorage.removeItem(popupKey);
+    }
+  }
+});
+
+window.onkeydown = function() {
+    var keycode = event.keyCode;
+    if (keycode == 18) {
+        localStorage.removeItem(popupKey);
+    }
+}
+
+function closePopup() {
+  const checkbox = document.getElementById("todayClose");
+
+  if (checkbox.checked) {
+    const now = new Date().getTime();
+    const tomorrow = now + (24 * 60 * 60 * 1000);
+
+    localStorage.setItem(popupKey, tomorrow);
+  }
+
+  document.getElementById("popup").style.display = "none";
+}
+
 fetch("components/header.html")
   .then(r => r.text())
   .then(d => document.getElementById("header").innerHTML = d);
