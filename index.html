@@ -35,7 +35,7 @@ html, body {
    최신호
 ========================= */
 .latest-box {
-  background: #eee;
+  background: #87ceeb;
   border-radius: 12px;
   padding: 30px;
   display: flex;
@@ -78,7 +78,7 @@ html, body {
   height: 190px;
   object-fit: cover;
   border-radius: 6px;
-  background: #444;
+  background: #eee;
 }
 
 /* =========================
@@ -95,19 +95,17 @@ html, body {
   cursor: pointer;
 }
 
-/* 🔥 핵심: 가로 스크롤 */
+/* 가로 스크롤 */
 .list {
   display: flex;
   gap: 20px;
   margin-top: 15px;
-
   overflow-x: auto;
   padding-bottom: 10px;
-
   scroll-snap-type: x mandatory;
 }
 
-/* 스크롤바 살짝 숨김 */
+/* 스크롤바 */
 .list::-webkit-scrollbar {
   height: 6px;
 }
@@ -129,12 +127,8 @@ html, body {
   height: 180px;
   object-fit: cover;
   border-radius: 8px;
-  background: #444;
-  transition: transform 0.2s;
-}
-
-.item:hover .thumb {
-  transform: scale(1.05);
+  background: #eee;
+  /* 🔥 애니메이션 제거됨 */
 }
 
 .item p {
@@ -149,7 +143,7 @@ html, body {
 @media (max-width: 768px) {
 
   .latest-box {
-    flex-direction: row; /* ❗ 세로로 안 바꿈 */
+    flex-direction: row;
   }
 
   .latest-info h2 {
@@ -181,7 +175,7 @@ html, body {
       <div class="latest-box">
         <div class="latest-info">
           <h2>2026년 5월호</h2>
-          <p>간단한 설명</p>
+          <p>5월의 서오</p>
           <button onclick="location.href='202605.html'">보러 가기</button>
         </div>
 
@@ -194,7 +188,7 @@ html, body {
     <div class="section">
 
       <div class="list-header">
-        <div class="section-title">2026년 월간00</div>
+        <div class="section-title">2026년 월간서오</div>
         <div class="more" onclick="location.href='2605more.html'">더보기 →</div>
       </div>
 
