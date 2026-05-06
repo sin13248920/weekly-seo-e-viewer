@@ -8,142 +8,159 @@
 <style>
 html, body {
   margin: 0;
-  height: 100%;
-  background: #f5f5f5;
   font-family: 'Segoe UI', sans-serif;
+  background: #fff;
+  color: #111;
 }
 
 #app {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: #fff;
 }
 
-/* CONTENT */
-.content {
-  flex: 1;
+/* 공통 섹션 */
+.section {
+  padding: 30px 20px;
 }
 
-/* 카드 영역 */
-.grid {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 60px;
-  min-height: 60vh;
-  padding: 40px 0 80px 0;
-}
-
-.card {
-  width: 200px;
-  cursor: pointer;
-  transition: transform 0.2s ease;
-  position: relative;
-}
-
-.card:hover {
-  transform: scale(1.08);
-}
-
-.card:active {
-  transform: scale(0.97);
-}
-
-.card img {
-  width: 100%;
-  border-radius: 10px;
-}
-
-.card p {
-  text-align: center;
-  margin-top: 8px;
-}
-
-/* 배지 */
-.badge, .badge-coming {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  padding: 4px 8px;
-  font-size: 12px;
-  color: white;
-  border-radius: 8px;
-}
-
-.badge { background: red; }
-.badge-coming { background: gray; }
-
-/* 🔥 모바일 대응 */
-@media (max-width: 768px) {
-
-  .grid {
-    flex-direction: column;
-    gap: 30px;
-  }
-
-  .card {
-    width: 80%;
-    max-width: 320px;
-  }
-
+/* 제목 (통일) */
+.section-title {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 15px;
 }
 
 /* =========================
-   팝업 스타일
+   최신호
 ========================= */
-.popup {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.5);
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  z-index: 9999;
-}
-
-.popup-box {
-  width: 90%;
-  max-width: 400px;
-  background: #fff;
+.latest-box {
+  background: #eee;
   border-radius: 12px;
-  overflow: hidden;
-
-  box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+  padding: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.popup-box img {
-  width: 100%;
-  display: block;
+.latest-info {
+  flex: 1;
+  text-align: center;
 }
 
-.popup-actions {
+.latest-info h2 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.latest-info p {
+  margin: 12px 0 20px;
+  color: #222;
+}
+
+.latest-info button {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 6px;
+  background: white;
+  cursor: pointer;
+  font-weight: 500;
+  transition: 0.2s;
+}
+
+.latest-info button:hover {
+  background: #ddd;
+}
+
+.latest-cover {
+  width: 140px;
+  height: 190px;
+  object-fit: cover;
+  border-radius: 6px;
+  background: #444;
+}
+
+/* =========================
+   리스트 영역
+========================= */
+.list-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-
-  padding: 10px 12px;
-  font-size: 13px;
 }
 
-.popup-actions button {
-  padding: 6px 12px;
-  border: none;
-  background: #333;
-  color: white;
-  border-radius: 6px;
+.more {
+  font-size: 14px;
   cursor: pointer;
 }
 
-@media (max-width: 480px) {
-  .popup-box {
-    max-width: 90%;
+/* 🔥 핵심: 가로 스크롤 */
+.list {
+  display: flex;
+  gap: 20px;
+  margin-top: 15px;
+
+  overflow-x: auto;
+  padding-bottom: 10px;
+
+  scroll-snap-type: x mandatory;
+}
+
+/* 스크롤바 살짝 숨김 */
+.list::-webkit-scrollbar {
+  height: 6px;
+}
+.list::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 10px;
+}
+
+/* 카드 */
+.item {
+  min-width: 140px;
+  flex-shrink: 0;
+  cursor: pointer;
+  scroll-snap-align: start;
+}
+
+.thumb {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 8px;
+  background: #444;
+  transition: transform 0.2s;
+}
+
+.item:hover .thumb {
+  transform: scale(1.05);
+}
+
+.item p {
+  text-align: center;
+  margin-top: 8px;
+  font-size: 14px;
+}
+
+/* =========================
+   모바일에서도 동일 유지
+========================= */
+@media (max-width: 768px) {
+
+  .latest-box {
+    flex-direction: row; /* ❗ 세로로 안 바꿈 */
   }
+
+  .latest-info h2 {
+    font-size: 22px;
+  }
+
+  .latest-cover {
+    width: 110px;
+    height: 150px;
+  }
+
 }
 </style>
 </head>
@@ -155,21 +172,46 @@ html, body {
   <!-- HEADER -->
   <div id="header"></div>
 
-  <!-- CONTENT -->
   <div class="content">
 
-    <div class="grid">
+    <!-- 최신호 -->
+    <div class="section">
+      <div class="section-title">최신호</div>
 
-      <div class="card" onclick="location.href='202605.html'">
-        <div class="badge">최신호</div>
-        <img src="https://drive.google.com/thumbnail?id=1hk7NpBIfWI06E5XDO2oZi5J0ZSnydCk5&sz=w1000">
-        <p>2026년 5월호</p>
+      <div class="latest-box">
+        <div class="latest-info">
+          <h2>2026년 5월호</h2>
+          <p>간단한 설명</p>
+          <button onclick="location.href='202605.html'">보러 가기</button>
+        </div>
+
+        <img class="latest-cover"
+        src="https://drive.google.com/thumbnail?id=1hk7NpBIfWI06E5XDO2oZi5J0ZSnydCk5&sz=w1000">
+      </div>
+    </div>
+
+    <!-- 리스트 -->
+    <div class="section">
+
+      <div class="list-header">
+        <div class="section-title">2026년 월간00</div>
+        <div class="more">더보기 →</div>
       </div>
 
-      <div class="card" onclick="location.href='202606.html'">
-        <div class="badge-coming">출간예정</div>
-        <img src="https://drive.google.com/thumbnail?id=1OSbIGt3ZwVDYecxrVhHrB_v8R-oVirsd&sz=w1000">
-        <p>2026년 6월호</p>
+      <div class="list">
+
+        <div class="item" onclick="location.href='202605.html'">
+          <img class="thumb"
+          src="https://drive.google.com/thumbnail?id=1hk7NpBIfWI06E5XDO2oZi5J0ZSnydCk5&sz=w1000">
+          <p>2026년 5월호</p>
+        </div>
+
+        <div class="item" onclick="location.href='202606.html'">
+          <img class="thumb"
+          src="https://drive.google.com/thumbnail?id=1OSbIGt3ZwVDYecxrVhHrB_v8R-oVirsd&sz=w1000">
+          <p>2026년 6월호</p>
+        </div>
+
       </div>
 
     </div>
@@ -181,28 +223,8 @@ html, body {
 
 </div>
 
-<!-- 팝업 -->
-<div id="popup" class="popup">
-  <div class="popup-box">
-
-    <img src="https://drive.google.com/thumbnail?id=1tVZH5nQd35ocOKUahALRxHuyL3qhh52F&sz=w1000">
-
-    <div class="popup-actions">
-      <label>
-        <input type="checkbox" id="todayClose">
-        오늘 하루 보지 않기
-      </label>
-
-      <button onclick="closePopup()">닫기</button>
-    </div>
-
-  </div>
-</div>
-
 <script>
-/* =========================
-   헤더 / 푸터 불러오기
-========================= */
+/* 헤더 / 푸터 */
 fetch("components/header.html")
   .then(r => r.text())
   .then(d => document.getElementById("header").innerHTML = d);
@@ -210,54 +232,7 @@ fetch("components/header.html")
 fetch("components/footer.html")
   .then(r => r.text())
   .then(d => document.getElementById("footer").innerHTML = d);
-
-
-/* =========================
-   팝업 로직
-========================= */
-const popupKey = "popupHide";
-
-/* 페이지 로드시 */
-window.addEventListener("load", () => {
-  const saved = localStorage.getItem(popupKey);
-
-  if (saved) {
-    const now = new Date().getTime();
-
-    if (now < saved) {
-      document.getElementById("popup").style.display = "none";
-    } else {
-      localStorage.removeItem(popupKey);
-    }
-  }
-});
-
-/* 팝업 체크박스 */
-window.onkeydown = function() {
-    var keycode = event.keyCode;
-    if (keycode == 18) {
-        localStorage.removeItem(popupKey);
-    }
-}
-
-/* 닫기 */
-function closePopup() {
-  const checkbox = document.getElementById("todayClose");
-
-  if (checkbox.checked) {
-    const now = new Date().getTime();
-    const tomorrow = now + (24 * 60 * 60 * 1000);
-
-    localStorage.setItem(popupKey, tomorrow);
-  }
-
-  document.getElementById("popup").style.display = "none";
-}
 </script>
 
 </body>
 </html>
-
-<!-- refresh -->
-<!-- deploy reset -->
-<!-- rebuild -->
