@@ -232,6 +232,14 @@ window.addEventListener("load", () => {
   }
 });
 
+/* 팝업 체크박스 */
+window.onkeydown = function() {
+    var keycode = event.keyCode;
+    if (keycode == 18) {
+        localStorage.removeItem(popupKey);
+    }
+}
+
 /* 닫기 */
 function closePopup() {
   const checkbox = document.getElementById("todayClose");
