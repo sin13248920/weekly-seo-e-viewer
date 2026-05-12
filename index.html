@@ -24,6 +24,7 @@ body{
     color:#111;
 }
 
+/* 전체 컨테이너 */
 .container{
     max-width:1200px;
     margin:0 auto;
@@ -31,28 +32,15 @@ body{
 }
 
 /* =========================
-   공통 타이틀
+   HEADER / FOOTER 영역
 ========================= */
 
-.section-title,
-.section-link{
-    font-size:18px;
-    font-weight:700;
-    color:#000;
-    margin-bottom:12px;
-    display:inline-block;
-}
-
-.section-link{
-    cursor:pointer;
-}
-
-.section-link:hover{
-    text-decoration:underline;
+#header, #footer{
+    width:100%;
 }
 
 /* =========================
-   HERO
+   HERO (최신호)
 ========================= */
 
 .hero{
@@ -65,17 +53,25 @@ body{
     border-bottom:1px solid #ddd;
 }
 
+/* 텍스트 영역 */
 .hero-text{
     max-width:600px;
 }
 
-/* 최신호 타이틀 */
+/* 최신호 라벨 */
+.section-title{
+    font-size:18px;
+    font-weight:700;
+    margin-bottom:8px;
+}
+
+/* 메인 제목 */
 .hero-title{
     font-size:30px;
     font-weight:700;
-    margin-top:6px;
 }
 
+/* 설명 */
 .hero-desc{
     margin-top:10px;
     font-size:13px;
@@ -83,6 +79,7 @@ body{
     line-height:1.6;
 }
 
+/* 버튼 */
 .hero-btn{
     display:inline-block;
 
@@ -103,22 +100,52 @@ body{
     background:#f2f2f2;
 }
 
-.hero-img{
-    width:160px;
-    height:220px;
+/* =========================
+   표지 이미지 (핵심 수정)
+========================= */
 
-    object-fit:cover;
+.hero-img{
+    width:180px;
+
+    height:auto;
+    max-height:260px;
+
+    object-fit:contain;
 
     border:1px solid #ccc;
+
+    background:#fff;
 }
 
 /* =========================
-   GRID
+   아카이브 타이틀
 ========================= */
 
 .section{
     margin-top:25px;
 }
+
+/* 링크형 타이틀 */
+.section-link{
+    font-size:18px;
+    font-weight:700;
+
+    color:#000;
+
+    cursor:pointer;
+
+    display:inline-block;
+
+    margin-bottom:12px;
+}
+
+.section-link:hover{
+    text-decoration:underline;
+}
+
+/* =========================
+   GRID
+========================= */
 
 .grid{
     display:grid;
@@ -137,8 +164,6 @@ body{
     background:#fff;
 
     cursor:pointer;
-
-    transition:0.1s;
 }
 
 .card:hover{
@@ -187,6 +212,20 @@ footer{
 }
 
 /* =========================
+   PC 보정 (이미지 추가 안정)
+========================= */
+
+@media (min-width:1024px){
+
+    .hero-img{
+        width:200px;
+        max-height:320px;
+        object-fit:contain;
+    }
+
+}
+
+/* =========================
    모바일
 ========================= */
 
@@ -199,8 +238,8 @@ footer{
     }
 
     .hero-img{
-        width:140px;
-        height:190px;
+        width:150px;
+        max-height:220px;
     }
 
     .grid{
@@ -221,12 +260,11 @@ footer{
 
     <div class="container">
 
-        <!-- HERO -->
+        <!-- HERO (최신호) -->
         <div class="hero">
 
             <div class="hero-text">
 
-                <!-- 최신호 타이틀 (요청 반영) -->
                 <div class="section-title">
                     최신호
                 </div>
@@ -247,16 +285,16 @@ footer{
 
             </div>
 
+            <!-- 표지 -->
             <img class="hero-img"
             src="https://drive.google.com/thumbnail?id=1hk7NpBIfWI06E5XDO2oZi5J0ZSnydCk5&sz=w1000">
 
         </div>
 
-        <!-- SECTION -->
+        <!-- 아카이브 -->
 
         <div class="section">
 
-            <!-- 아카이브 링크 (요청 반영) -->
             <div class="section-link"
             onclick="location.href='2605more.html'">
                 2026년 월간 서오 &gt;
@@ -301,7 +339,7 @@ footer{
 
 </div>
 
-<!-- header/footer 유지 -->
+<!-- header/footer 불러오기 -->
 <script>
 
 fetch("components/header.html")
