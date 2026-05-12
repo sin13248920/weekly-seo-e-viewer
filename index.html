@@ -1,174 +1,214 @@
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>월간서오 e뷰어</title>
 
 <style>
-html, body {
-  margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background: #fff;
-  color: #111;
+
+/* =========================
+   기본
+========================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
 }
 
-#app {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+body{
+    font-family:"Segoe UI","Noto Sans KR",sans-serif;
+    background:#fff;
+    color:#111;
 }
 
-/* 공통 */
-.section {
-  padding: 30px 20px;
-}
-
-.section-title {
-  font-size: 20px;
-  font-weight: 600;
-  margin-bottom: 15px;
+.container{
+    max-width:1200px;
+    margin:0 auto;
+    padding:20px;
 }
 
 /* =========================
-   최신호
+   공통 타이틀
 ========================= */
-.latest-box {
-  background: #87ceeb;
-  border-radius: 12px;
-  padding: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+
+.section-title,
+.section-link{
+    font-size:18px;
+    font-weight:700;
+    color:#000;
+    margin-bottom:12px;
+    display:inline-block;
 }
 
-.latest-info {
-  flex: 1;
-  text-align: center;
+.section-link{
+    cursor:pointer;
 }
 
-.latest-info h2 {
-  margin: 0;
-  font-size: 26px;
-}
-
-.latest-info p {
-  margin: 12px 0 20px;
-}
-
-.latest-info button {
-  padding: 10px 18px;
-  border: none;
-  border-radius: 6px;
-  background: white;
-  cursor: pointer;
-}
-
-.latest-info button:hover {
-  background: #ddd;
-}
-
-.latest-cover {
-  width: 150px;
-  height: 210px;
-  object-fit: cover;
-  border-radius: 8px;
+.section-link:hover{
+    text-decoration:underline;
 }
 
 /* =========================
-   리스트
+   HERO
 ========================= */
-.list-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+
+.hero{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    padding:25px 0;
+
+    border-bottom:1px solid #ddd;
 }
 
-.more {
-  font-size: 14px;
-  cursor: pointer;
+.hero-text{
+    max-width:600px;
 }
 
-.list {
-  display: flex;
-  gap: 22px;
-  margin-top: 15px;
-  overflow-x: auto;
-  padding-bottom: 10px;
-  scroll-snap-type: x mandatory;
+/* 최신호 타이틀 */
+.hero-title{
+    font-size:30px;
+    font-weight:700;
+    margin-top:6px;
 }
 
-.list::-webkit-scrollbar {
-  height: 6px;
+.hero-desc{
+    margin-top:10px;
+    font-size:13px;
+    color:#555;
+    line-height:1.6;
 }
-.list::-webkit-scrollbar-thumb {
-  background: #ccc;
-  border-radius: 10px;
+
+.hero-btn{
+    display:inline-block;
+
+    margin-top:15px;
+
+    padding:8px 14px;
+
+    font-size:13px;
+
+    border:1px solid #333;
+
+    background:#fff;
+
+    cursor:pointer;
+}
+
+.hero-btn:hover{
+    background:#f2f2f2;
+}
+
+.hero-img{
+    width:160px;
+    height:220px;
+
+    object-fit:cover;
+
+    border:1px solid #ccc;
+}
+
+/* =========================
+   GRID
+========================= */
+
+.section{
+    margin-top:25px;
+}
+
+.grid{
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fill,minmax(160px,1fr));
+
+    gap:12px;
 }
 
 /* 카드 */
-.item {
-  min-width: 170px; /* 기본 */
-  flex-shrink: 0;
-  cursor: pointer;
-  scroll-snap-align: start;
+
+.card{
+    border:1px solid #ccc;
+
+    background:#fff;
+
+    cursor:pointer;
+
+    transition:0.1s;
 }
 
-.thumb {
-  width: 100%;
-  height: 230px;
-  object-fit: cover;
-  border-radius: 10px;
+.card:hover{
+    background:#f9f9f9;
 }
 
-.item p {
-  text-align: center;
-  margin-top: 8px;
-  font-size: 14px;
+.card img{
+    width:100%;
+    height:200px;
+
+    object-fit:cover;
+
+    border-bottom:1px solid #ccc;
+}
+
+.card-body{
+    padding:8px;
+}
+
+.card-title{
+    font-size:13px;
+    font-weight:700;
+}
+
+.card-desc{
+    font-size:11px;
+    color:#666;
+    margin-top:4px;
 }
 
 /* =========================
-   PC (적당히 크게)
+   FOOTER
 ========================= */
-@media (min-width: 1024px) {
 
-  .item {
-    min-width: 230px;
-  }
+footer{
+    margin-top:40px;
 
-  .thumb {
-    height: 310px;
-  }
+    padding-top:15px;
 
-  .item p {
-    font-size: 16px;
-  }
+    border-top:1px solid #ddd;
 
+    font-size:11px;
+    color:#777;
+
+    text-align:center;
 }
 
 /* =========================
    모바일
 ========================= */
-@media (max-width: 768px) {
 
-  .latest-info h2 {
-    font-size: 22px;
-  }
+@media (max-width:768px){
 
-  .latest-cover {
-    width: 110px;
-    height: 150px;
-  }
+    .hero{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:15px;
+    }
 
-  .item {
-    min-width: 140px;
-  }
+    .hero-img{
+        width:140px;
+        height:190px;
+    }
 
-  .thumb {
-    height: 180px;
-  }
+    .grid{
+        grid-template-columns:repeat(2,1fr);
+    }
 
 }
+
 </style>
 </head>
 
@@ -176,68 +216,102 @@ html, body {
 
 <div id="app">
 
-  <!-- HEADER -->
-  <div id="header"></div>
+    <!-- HEADER (기존 유지) -->
+    <div id="header"></div>
 
-  <div class="content">
+    <div class="container">
 
-    <!-- 최신호 -->
-    <div class="section">
-      <div class="section-title">최신호</div>
+        <!-- HERO -->
+        <div class="hero">
 
-      <div class="latest-box">
-        <div class="latest-info">
-          <h2>2026년 5월호</h2>
-          <p>5월의 서오</p>
-          <button onclick="location.href='202605.html'">보러 가기</button>
+            <div class="hero-text">
+
+                <!-- 최신호 타이틀 (요청 반영) -->
+                <div class="section-title">
+                    최신호
+                </div>
+
+                <div class="hero-title">
+                    2026년 5월호
+                </div>
+
+                <div class="hero-desc">
+                    월간서오 최신호입니다.<br>
+                    전자잡지 형식으로 구성된 e뷰어 서비스입니다.
+                </div>
+
+                <button class="hero-btn"
+                onclick="location.href='202605.html'">
+                    최신호 보기
+                </button>
+
+            </div>
+
+            <img class="hero-img"
+            src="https://drive.google.com/thumbnail?id=1hk7NpBIfWI06E5XDO2oZi5J0ZSnydCk5&sz=w1000">
+
         </div>
 
-        <img class="latest-cover"
-        src="https://drive.google.com/thumbnail?id=1hk7NpBIfWI06E5XDO2oZi5J0ZSnydCk5&sz=w1000">
-      </div>
+        <!-- SECTION -->
+
+        <div class="section">
+
+            <!-- 아카이브 링크 (요청 반영) -->
+            <div class="section-link"
+            onclick="location.href='2605more.html'">
+                2026년 월간 서오 &gt;
+            </div>
+
+            <div class="grid">
+
+                <div class="card"
+                onclick="location.href='202605.html'">
+
+                    <img src="https://drive.google.com/thumbnail?id=1hk7NpBIfWI06E5XDO2oZi5J0ZSnydCk5&sz=w1000">
+
+                    <div class="card-body">
+                        <div class="card-title">2026년 5월호</div>
+                        <div class="card-desc">최신 발행본</div>
+                    </div>
+
+                </div>
+
+                <div class="card"
+                onclick="location.href='202606.html'">
+
+                    <img src="https://drive.google.com/thumbnail?id=1OSbIGt3ZwVDYecxrVhHrB_v8R-oVirsd&sz=w1000">
+
+                    <div class="card-body">
+                        <div class="card-title">2026년 6월호</div>
+                        <div class="card-desc">발행 예정</div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
 
-    <!-- 리스트 -->
-    <div class="section">
-
-      <div class="list-header">
-        <div class="section-title">2026년 월간서오</div>
-        <div class="more" onclick="location.href='2605more.html'">더보기 →</div>
-      </div>
-
-      <div class="list">
-
-        <div class="item" onclick="location.href='202605.html'">
-          <img class="thumb"
-          src="https://drive.google.com/thumbnail?id=1hk7NpBIfWI06E5XDO2oZi5J0ZSnydCk5&sz=w1000">
-          <p>2026년 5월호</p>
-        </div>
-
-        <div class="item" onclick="location.href='202606.html'">
-          <img class="thumb"
-          src="https://drive.google.com/thumbnail?id=1OSbIGt3ZwVDYecxrVhHrB_v8R-oVirsd&sz=w1000">
-          <p>2026년 6월호</p>
-        </div>
-
-      </div>
-
-    </div>
-
-  </div>
-
-  <!-- FOOTER -->
-  <div id="footer"></div>
+    <!-- FOOTER (기존 유지) -->
+    <footer>
+        <div id="footer"></div>
+    </footer>
 
 </div>
 
+<!-- header/footer 유지 -->
 <script>
+
 fetch("components/header.html")
-  .then(r => r.text())
-  .then(d => document.getElementById("header").innerHTML = d);
+.then(r => r.text())
+.then(d => document.getElementById("header").innerHTML = d);
 
 fetch("components/footer.html")
-  .then(r => r.text())
-  .then(d => document.getElementById("footer").innerHTML = d);
+.then(r => r.text())
+.then(d => document.getElementById("footer").innerHTML = d);
+
 </script>
 
 </body>
