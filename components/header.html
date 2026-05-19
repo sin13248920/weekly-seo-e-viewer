@@ -1,53 +1,567 @@
-<div class="header">
-  <div class="header-inner">
+```html
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
-    <!-- 왼쪽: 로고 -->
-    <div class="logo" onclick="location.href='index.html'">
-      <img src="https://drive.google.com/thumbnail?id=1lFUKv4ZpRblOeLCLD8aUp11aR952kQdj&sz=w1000">
-    </div>
-
-    <!-- 오른쪽: 텍스트 -->
-    <div class="header-title">
-    </div>
-
-  </div>
-</div>
+<title>2015 Header</title>
 
 <style>
-.header {
-  width: 100%;
-  border-bottom: 1px solid #e5e5e5;
-  background: #fff;
+
+/* =========================
+   기본
+========================= */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
 }
 
-.header-inner {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 12px 20px;
+body{
 
-  display: flex;
-  align-items: center;
-  justify-content: space-between; /* ✔ 핵심 */
+    font-family:
+    "맑은 고딕",
+    "Malgun Gothic",
+    sans-serif;
+
+    background:#f3f4f7;
 }
 
-/* 텍스트 (오른쪽 정렬 느낌) */
-.header-title {
-  font-size: 14px;
-  color: #222;
-  font-weight: 600;
-  letter-spacing: 0.2px;
+/* =========================
+   HEADER
+========================= */
+.site-header{
 
-  text-align: right;
+    width:100%;
+    height:74px;
+
+    background:#ffffff;
+
+    border-bottom:1px solid #d5dbe2;
+
+    display:flex;
+    align-items:center;
+
+    padding:0 26px;
+
+    position:sticky;
+    top:0;
+    z-index:999;
+
+    box-shadow:
+    0 1px 3px rgba(0,0,0,0.04);
 }
 
-/* 로고 */
-.logo img {
-  height: clamp(40px, 6vw, 60px);
-  cursor: pointer;
+/* =========================
+   좌측
+========================= */
+.header-left{
+
+    width:220px;
+
+    display:flex;
+    align-items:center;
 }
 
-.header-title {
-  font-size: clamp(12px, 1.2vw, 16px);
+.header-logo{
+
+    display:flex;
+    align-items:center;
 }
-  
+
+.header-logo img{
+
+    height:42px;
+
+    width:auto;
+
+    display:block;
+}
+
+/* =========================
+   가운데 검색
+========================= */
+.header-center{
+
+    flex:1;
+
+    display:flex;
+    justify-content:center;
+}
+
+.header-search{
+
+    width:100%;
+    max-width:620px;
+
+    display:flex;
+    align-items:center;
+}
+
+/* 검색 입력 */
+.header-search input{
+
+    flex:1;
+
+    height:44px;
+
+    border:1px solid #cfd6de;
+    border-right:none;
+
+    background:#fff;
+
+    padding:0 16px;
+
+    font-size:14px;
+
+    color:#222;
+
+    outline:none;
+}
+
+.header-search input:focus{
+
+    border-color:#9ca7b3;
+}
+
+/* 검색 버튼 */
+.search-btn{
+
+    width:64px;
+    height:44px;
+
+    border:1px solid #cfd6de;
+
+    background:#f7f8fa;
+
+    cursor:pointer;
+
+    transition:0.15s;
+}
+
+.search-btn:hover{
+
+    background:#eceff3;
+}
+
+/* 검색 아이콘 */
+.search-btn span{
+
+    font-size:30px;
+
+    font-weight:bold;
+
+    line-height:1;
+
+    color:#444;
+}
+
+/* =========================
+   우측 메뉴
+========================= */
+.header-right{
+
+    width:220px;
+
+    display:flex;
+    justify-content:flex-end;
+    align-items:flex-start;
+
+    gap:24px;
+}
+
+/* 메뉴 공통 */
+.icon-menu{
+
+    display:flex;
+    flex-direction:column;
+
+    align-items:center;
+    justify-content:flex-start;
+
+    text-decoration:none;
+
+    color:#444;
+
+    transition:0.15s;
+
+    cursor:pointer;
+
+    width:52px;
+
+    margin-top:4px;
+}
+
+.icon-menu:hover{
+
+    color:#111;
+}
+
+/* 공통 아이콘 영역 */
+.icon-menu .icon{
+
+    width:100%;
+    height:42px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    line-height:1;
+
+    margin-bottom:4px;
+
+    font-weight:bold;
+}
+
+/* 검색 아이콘 */
+.mobile-search-btn .icon{
+
+    font-size:42px;
+}
+
+/* 책 아이콘 */
+.library-icon{
+
+    font-size:28px;
+
+    position:relative;
+    top:2px;
+}
+
+/* 메뉴명 */
+.icon-menu .label{
+
+    font-size:11px;
+
+    font-weight:bold;
+
+    letter-spacing:-0.2px;
+
+    line-height:1;
+
+    text-align:center;
+}
+
+/* 버튼 초기화 */
+.mobile-search-btn{
+
+    border:none;
+    background:none;
+
+    padding:0;
+}
+
+/* =========================
+   모바일 검색창
+========================= */
+.mobile-search-overlay{
+
+    display:none;
+
+    position:fixed;
+
+    top:0;
+    left:0;
+
+    width:100%;
+    height:100%;
+
+    background:rgba(0,0,0,0.45);
+
+    z-index:9999;
+}
+
+/* 검색 박스 */
+.mobile-search-box{
+
+    width:92%;
+
+    margin:76px auto 0;
+
+    background:#fff;
+
+    border:1px solid #d5dbe2;
+
+    display:flex;
+
+    box-shadow:
+    0 6px 18px rgba(0,0,0,0.15);
+}
+
+.mobile-search-box input{
+
+    flex:1;
+
+    height:50px;
+
+    border:none;
+
+    padding:0 16px;
+
+    font-size:15px;
+
+    outline:none;
+}
+
+/* 모바일 검색 버튼 */
+.mobile-search-box button{
+
+    width:68px;
+
+    border:none;
+
+    border-left:1px solid #d7dde5;
+
+    background:#f7f8fa;
+
+    cursor:pointer;
+}
+
+.mobile-search-box button span{
+
+    font-size:34px;
+
+    font-weight:bold;
+
+    color:#444;
+}
+
+/* =========================
+   모바일
+========================= */
+@media (max-width:768px){
+
+    .site-header{
+
+        height:62px;
+
+        padding:0 14px;
+    }
+
+    /* 좌측 */
+    .header-left{
+
+        width:auto;
+    }
+
+    .header-logo img{
+
+        height:36px;
+    }
+
+    /* PC 검색 숨김 */
+    .header-center{
+
+        display:none;
+    }
+
+    /* 우측 */
+    .header-right{
+
+        width:auto;
+
+        margin-left:auto;
+
+        gap:18px;
+
+        align-items:flex-start;
+    }
+
+    /* 메뉴 */
+    .icon-menu{
+
+        width:48px;
+
+        margin-top:2px;
+    }
+
+    /* 공통 아이콘 */
+    .icon-menu .icon{
+
+        height:36px;
+
+        margin-bottom:4px;
+    }
+
+    /* 검색 아이콘 */
+    .mobile-search-btn .icon{
+
+        font-size:38px;
+    }
+
+    /* 책 아이콘 */
+    .library-icon{
+
+        font-size:24px;
+
+        top:2px;
+    }
+
+    /* 메뉴명 */
+    .icon-menu .label{
+
+        font-size:10px;
+    }
+
+}
+
+/* =========================
+   PC에서는 모바일 검색 숨김
+========================= */
+@media (min-width:769px){
+
+    .mobile-search-btn{
+
+        display:none;
+    }
+
+}
+
 </style>
+</head>
+
+<body>
+
+<!-- =========================
+     HEADER
+========================= -->
+<header class="site-header">
+
+    <!-- 좌측 -->
+    <div class="header-left">
+
+        <a
+        href="index.html"
+        class="header-logo">
+
+            <img
+            src="https://drive.google.com/thumbnail?id=1lFUKv4ZpRblOeLCLD8aUp11aR952kQdj&sz=w1000"
+            alt="로고">
+
+        </a>
+
+    </div>
+
+    <!-- 가운데 검색 -->
+    <div class="header-center">
+
+        <div class="header-search">
+
+            <input
+            type="text"
+            placeholder="통합검색">
+
+            <button class="search-btn">
+
+                <span>⌕</span>
+
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- 우측 -->
+    <div class="header-right">
+
+        <!-- 모바일 검색 -->
+        <button
+        class="icon-menu mobile-search-btn"
+        onclick="openSearch()">
+
+            <div class="icon">
+                ⌕
+            </div>
+
+            <div class="label">
+                검색
+            </div>
+
+        </button>
+
+        <!-- 내 서재 -->
+        <a
+        href="favorite.html"
+        class="icon-menu">
+
+            <div class="icon library-icon">
+                🕮
+            </div>
+
+            <div class="label">
+                내 서재
+            </div>
+
+        </a>
+
+    </div>
+
+</header>
+
+<!-- =========================
+     모바일 검색창
+========================= -->
+<div
+class="mobile-search-overlay"
+id="mobileSearch">
+
+    <div class="mobile-search-box">
+
+        <input
+        type="text"
+        placeholder="통합검색">
+
+        <button onclick="closeSearch()">
+
+            <span>⌕</span>
+
+        </button>
+
+    </div>
+
+</div>
+
+<script>
+
+/* =========================
+   검색창 열기
+========================= */
+function openSearch(){
+
+    document.getElementById(
+        "mobileSearch"
+    ).style.display = "block";
+}
+
+/* =========================
+   검색창 닫기
+========================= */
+function closeSearch(){
+
+    document.getElementById(
+        "mobileSearch"
+    ).style.display = "none";
+}
+
+/* =========================
+   바깥 클릭 시 닫기
+========================= */
+document
+.getElementById("mobileSearch")
+.addEventListener("click", function(e){
+
+    if(e.target === this){
+
+        closeSearch();
+    }
+
+});
+
+</script>
+
+</body>
+</html>
+```
