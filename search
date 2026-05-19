@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>통합검색</title>
+
+<style>
+
+/* =========================
+   기본
+========================= */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+
+    font-family:
+    "맑은 고딕",
+    "Malgun Gothic",
+    sans-serif;
+
+    background:#f3f4f7;
+
+    color:#222;
+}
+
+/* =========================
+   HEADER
+========================= */
+.site-header{
+
+    width:100%;
+    height:74px;
+
+    background:#ffffff;
+
+    border-bottom:1px solid #d5dbe2;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:0 24px;
+
+    position:sticky;
+    top:0;
+    z-index:999;
+
+    box-shadow:
+    0 1px 3px rgba(0,0,0,0.04);
+}
+
+/* 검색 */
+.search-form{
+
+    width:100%;
+    max-width:720px;
+
+    display:flex;
+    align-items:center;
+}
+
+.search-form input{
+
+    flex:1;
+
+    height:46px;
+
+    border:1px solid #cfd6de;
+    border-right:none;
+
+    background:#fff;
+
+    padding:0 16px;
+
+    font-size:15px;
+
+    outline:none;
+}
+
+.search-form input:focus{
+
+    border-color:#9da8b4;
+}
+
+/* 버튼 */
+.search-form button{
+
+    width:68px;
+    height:46px;
+
+    border:1px solid #cfd6de;
+
+    background:#f7f8fa;
+
+    cursor:pointer;
+
+    transition:0.15s;
+}
+
+.search-form button:hover{
+
+    background:#eceff3;
+}
+
+.search-form button span{
+
+    font-size:32px;
+
+    font-weight:bold;
+
+    color:#444;
+}
+
+/* =========================
+   본문
+========================= */
+.search-wrap{
+
+    max-width:1100px;
+
+    margin:34px auto;
+
+    padding:0 24px;
+}
+
+/* 결과 제목 */
+.search-title{
+
+    font-size:24px;
+
+    font-weight:bold;
+
+    color:#222;
+
+    margin-bottom:28px;
+
+    letter-spacing:-0.5px;
+}
+
+/* 기본 안내 */
+.search-empty{
+
+    background:#fff;
+
+    border:1px solid #d7dde5;
+
+    padding:70px 30px;
+
+    text-align:center;
+
+    font-size:16px;
+
+    color:#666;
+}
+
+/* 검색 결과 */
+.search-result{
+
+    background:#fff;
+
+    border:1px solid #d7dde5;
+
+    padding:22px;
+
+    margin-bottom:14px;
+
+    transition:0.15s;
+}
+
+.search-result:hover{
+
+    border-color:#aeb8c4;
+
+    box-shadow:
+    0 2px 8px rgba(0,0,0,0.05);
+}
+
+/* 제목 */
+.result-title{
+
+    font-size:18px;
+
+    font-weight:bold;
+
+    color:#234a7c;
+
+    margin-bottom:10px;
+}
+
+/* 설명 */
+.result-desc{
+
+    font-size:14px;
+
+    line-height:1.7;
+
+    color:#555;
+}
+
+/* 링크 */
+.result-link{
+
+    display:inline-block;
+
+    margin-top:14px;
+
+    font-size:13px;
+
+    color:#2d5f9a;
+
+    text-decoration:none;
+}
+
+.result-link:hover{
+
+    text-decoration:underline;
+}
+
+/* =========================
+   모바일
+========================= */
+@media (max-width:768px){
+
+    .site-header{
+
+        height:62px;
+
+        padding:0 14px;
+    }
+
+    .search-form input{
+
+        height:42px;
+
+        font-size:14px;
+    }
+
+    .search-form button{
+
+        width:60px;
+        height:42px;
+    }
+
+    .search-form button span{
+
+        font-size:28px;
+    }
+
+    .search-wrap{
+
+        margin:22px auto;
+
+        padding:0 14px;
+    }
+
+    .search-title{
+
+        font-size:20px;
+
+        margin-bottom:20px;
+    }
+
+    .search-empty{
+
+        padding:50px 20px;
+
+        font-size:14px;
+    }
+
+    .search-result{
+
+        padding:18px;
+    }
+
+    .result-title{
+
+        font-size:16px;
+    }
+
+    .result-desc{
+
+        font-size:13px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- =========================
+     HEADER
+========================= -->
+<header class="site-header">
+
+    <form
+    class="search-form"
+    action="search.html"
+    method="get">
+
+        <input
+        type="text"
+        name="q"
+        id="searchInput"
+        placeholder="통합검색">
+
+        <button type="submit">
+
+            <span>⌕</span>
+
+        </button>
+
+    </form>
+
+</header>
+
+<!-- =========================
+     본문
+========================= -->
+<div class="search-wrap">
+
+    <!-- 제목 -->
+    <div
+    class="search-title"
+    id="searchTitle">
+
+        검색어를 입력해주세요.
+
+    </div>
+
+    <!-- 결과 -->
+    <div id="searchResults"></div>
+
+</div>
+
+<script>
+
+/* =========================
+   URL 검색어 추출
+========================= */
+const params =
+new URLSearchParams(location.search);
+
+const query =
+params.get("q");
+
+/* 요소 */
+const title =
+document.getElementById("searchTitle");
+
+const results =
+document.getElementById("searchResults");
+
+const input =
+document.getElementById("searchInput");
+
+/* 검색어 입력 유지 */
+if(query){
+
+    input.value = query;
+
+}
+
+/* =========================
+   검색어 없음
+========================= */
+if(!query || query.trim() === ""){
+
+    title.innerText =
+    "검색어를 입력해주세요.";
+
+    results.innerHTML = `
+
+    <div class="search-empty">
+        원하는 문서 및 콘텐츠를 검색해보세요.
+    </div>
+
+    `;
+
+}
+
+/* =========================
+   검색 결과 표시
+========================= */
+else{
+
+    title.innerHTML = `
+
+    '<strong>${query}</strong>'와 관련된 검색결과입니다.
+
+    `;
+
+    /* 예시 결과 */
+    results.innerHTML = `
+
+    <div class="search-result">
+
+        <div class="result-title">
+            2026년 5월호
+        </div>
+
+        <div class="result-desc">
+            ${query}와 관련된 월간 서오 콘텐츠입니다.
+        </div>
+
+        <a
+        href="2605.html"
+        class="result-link">
+
+            문서 열기 →
+
+        </a>
+
+    </div>
+
+    <div class="search-result">
+
+        <div class="result-title">
+            특별기획 기사
+        </div>
+
+        <div class="result-desc">
+            ${query} 관련 특집 기사 및 참고자료입니다.
+        </div>
+
+        <a
+        href="#"
+        class="result-link">
+
+            문서 열기 →
+
+        </a>
+
+    </div>
+
+    `;
+
+}
+
+</script>
+
+</body>
+</html>
