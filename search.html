@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -66,6 +67,7 @@ body{
     align-items:center;
 }
 
+/* 검색 입력 */
 .search-form input{
 
     flex:1;
@@ -89,10 +91,10 @@ body{
     border-color:#9da8b4;
 }
 
-/* 버튼 */
+/* 검색 버튼 */
 .search-form button{
 
-    width:68px;
+    width:70px;
     height:46px;
 
     border:1px solid #cfd6de;
@@ -123,17 +125,17 @@ body{
 ========================= */
 .search-wrap{
 
-    max-width:1100px;
+    max-width:1120px;
 
     margin:34px auto;
 
     padding:0 24px;
 }
 
-/* 결과 제목 */
+/* 제목 */
 .search-title{
 
-    font-size:24px;
+    font-size:25px;
 
     font-weight:bold;
 
@@ -151,7 +153,7 @@ body{
 
     border:1px solid #d7dde5;
 
-    padding:70px 30px;
+    padding:80px 30px;
 
     text-align:center;
 
@@ -182,7 +184,7 @@ body{
     0 2px 8px rgba(0,0,0,0.05);
 }
 
-/* 제목 */
+/* 결과 제목 */
 .result-title{
 
     font-size:18px;
@@ -194,7 +196,7 @@ body{
     margin-bottom:10px;
 }
 
-/* 설명 */
+/* 결과 설명 */
 .result-desc{
 
     font-size:14px;
@@ -244,7 +246,7 @@ body{
 
     .search-form button{
 
-        width:60px;
+        width:62px;
         height:42px;
     }
 
@@ -269,7 +271,7 @@ body{
 
     .search-empty{
 
-        padding:50px 20px;
+        padding:60px 20px;
 
         font-size:14px;
     }
@@ -344,7 +346,38 @@ body{
 <script>
 
 /* =========================
-   URL 검색어 추출
+   검색 데이터
+========================= */
+const searchData = [
+
+    {
+        title:"2026년 5월호",
+        desc:"2026년 5월 월간 서오 본문입니다.",
+        link:"2605.html"
+    },
+
+    {
+        title:"최신호 안내",
+        desc:"최신 발행호 및 공지사항입니다.",
+        link:"index.html"
+    },
+
+    {
+        title:"특별기획 기사",
+        desc:"월간 서오 특별기획 콘텐츠입니다.",
+        link:"special.html"
+    },
+
+    {
+        title:"2605 More",
+        desc:"2026년 5월호 추가 콘텐츠입니다.",
+        link:"2605more.html"
+    }
+
+];
+
+/* =========================
+   URL 검색어
 ========================= */
 const params =
 new URLSearchParams(location.search);
@@ -362,11 +395,12 @@ document.getElementById("searchResults");
 const input =
 document.getElementById("searchInput");
 
-/* 검색어 입력 유지 */
+/* =========================
+   검색어 유지
+========================= */
 if(query){
 
     input.value = query;
-
 }
 
 /* =========================
@@ -380,7 +414,9 @@ if(!query || query.trim() === ""){
     results.innerHTML = `
 
     <div class="search-empty">
+
         원하는 문서 및 콘텐츠를 검색해보세요.
+
     </div>
 
     `;
@@ -388,60 +424,93 @@ if(!query || query.trim() === ""){
 }
 
 /* =========================
-   검색 결과 표시
+   검색 실행
 ========================= */
 else{
 
+    const keyword =
+    query.toLowerCase().trim();
+
+    /* 검색 필터 */
+    const filtered =
+    searchData.filter(item => {
+
+        return (
+
+            item.title
+            .toLowerCase()
+            .includes(keyword)
+
+            ||
+
+            item.desc
+            .toLowerCase()
+            .includes(keyword)
+
+        );
+
+    });
+
+    /* 제목 */
     title.innerHTML = `
 
     '<strong>${query}</strong>'와 관련된 검색결과입니다.
 
     `;
 
-    /* 예시 결과 */
-    results.innerHTML = `
+    /* 결과 없음 */
+    if(filtered.length === 0){
 
-    <div class="search-result">
+        results.innerHTML = `
 
-        <div class="result-title">
-            2026년 5월호
+        <div class="search-empty">
+
+            검색결과가 없습니다.
+
         </div>
 
-        <div class="result-desc">
-            ${query}와 관련된 월간 서오 콘텐츠입니다.
-        </div>
+        `;
 
-        <a
-        href="2605.html"
-        class="result-link">
+    }
 
-            문서 열기 →
+    /* 결과 있음 */
+    else{
 
-        </a>
+        results.innerHTML = "";
 
-    </div>
+        filtered.forEach(item => {
 
-    <div class="search-result">
+            results.innerHTML += `
 
-        <div class="result-title">
-            특별기획 기사
-        </div>
+            <div class="search-result">
 
-        <div class="result-desc">
-            ${query} 관련 특집 기사 및 참고자료입니다.
-        </div>
+                <div class="result-title">
 
-        <a
-        href="#"
-        class="result-link">
+                    ${item.title}
 
-            문서 열기 →
+                </div>
 
-        </a>
+                <div class="result-desc">
 
-    </div>
+                    ${item.desc}
 
-    `;
+                </div>
+
+                <a
+                href="${item.link}"
+                class="result-link">
+
+                    문서 열기 →
+
+                </a>
+
+            </div>
+
+            `;
+
+        });
+
+    }
 
 }
 
@@ -449,3 +518,4 @@ else{
 
 </body>
 </html>
+```
