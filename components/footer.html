@@ -1,13 +1,29 @@
 <div class="footer">
   <div class="footer-inner">
 
-    <img class="footer-logo"
-         src="https://drive.google.com/thumbnail?id=1Sr1eMqd6h21-HVOj93iMOohGJ1rAx3or&sz=w500">
+    <!-- LEFT -->
+    <div class="footer-left">
+      <img class="footer-logo"
+           src="https://drive.google.com/thumbnail?id=1Sr1eMqd6h21-HVOj93iMOohGJ1rAx3or&sz=w500">
 
-    <div class="footer-text">
-      <p>[02565] 서오시 용산구 서오중앙로 34(서오동)</p>
-      <p>대표번호 : 02-1234-5678 | 02-0987-6543 | 02-0987-4321</p>
-      <p>FAX : 02-1234-0987</p>
+      <div class="footer-text">
+        <p>[02565] 서오시 용산구 서오중앙로 34(서오동)</p>
+        <p>대표번호 : 02-1234-5678 | 02-0987-6543 | 02-0987-4321</p>
+        <p>FAX : 02-1234-0987</p>
+      </div>
+    </div>
+
+    <!-- RIGHT (Family Site) -->
+    <div class="family-wrap">
+      <button class="family-btn" onclick="toggleFamily(event)">
+        FAMILY SITE ▼
+      </button>
+
+      <div class="family-list" id="familyList">
+        <a href="https://sin13248920.github.io/Seo-Architecture/" target="_blank">
+          서오건축
+        </a>
+      </div>
     </div>
 
   </div>
@@ -16,30 +32,101 @@
 <style>
 .footer {
   width: 100%;
-  border-top: 1px solid #e5e5e5;
-  background: #fff;
+  background: #f2f4f7;
+  border-top: 2px solid #c9ced6;
+  font-family: "Malgun Gothic", Arial, sans-serif;
 }
 
 .footer-inner {
   max-width: 1100px;
   margin: 0 auto;
-  padding: 25px 20px;
+  padding: 22px 18px;
 
-  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
 }
 
-/* 로고 */
+/* LEFT */
+.footer-left {
+  text-align: left;
+}
+
 .footer-logo {
-  height: 26px;
-  margin-bottom: 12px;
-  opacity: 0.85;
+  height: 24px;
+  margin-bottom: 10px;
+  opacity: 0.9;
 }
 
-/* 텍스트 */
 .footer-text p {
-  margin: 4px 0;
-  font-size: 12px;
-  color: #666;
-  line-height: 1.5;
+  margin: 3px 0;
+  font-size: 11px;
+  color: #555;
+  letter-spacing: -0.2px;
+}
+
+/* RIGHT */
+.family-wrap {
+  position: relative;
+}
+
+/* 2015 느낌 버튼 (각진 박스) */
+.family-btn {
+  background: #e6e9ee;
+  border: 1px solid #b7bec8;
+  padding: 6px 10px;
+  font-size: 11px;
+  color: #333;
+  cursor: pointer;
+}
+
+/* 드롭다운 박스 */
+.family-list {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 32px;
+
+  width: 140px;
+  background: #fff;
+  border: 1px solid #b7bec8;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  z-index: 100;
+}
+
+/* 열림 */
+.family-list.show {
+  display: block;
+}
+
+/* 링크 */
+.family-list a {
+  display: block;
+  padding: 7px 10px;
+  font-size: 11px;
+  color: #333;
+  text-decoration: none;
+  border-bottom: 1px solid #eee;
+}
+
+.family-list a:last-child {
+  border-bottom: none;
+}
+
+.family-list a:hover {
+  background: #f0f2f5;
 }
 </style>
+
+<script>
+function toggleFamily(e) {
+  e.stopPropagation();
+
+  const list = document.getElementById("familyList");
+  list.classList.toggle("show");
+}
+
+document.addEventListener("click", function () {
+  document.getElementById("familyList").classList.remove("show");
+});
+</script>
