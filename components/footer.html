@@ -15,15 +15,17 @@
 
     <!-- RIGHT (Family Site) -->
     <div class="family-wrap">
-      <button class="family-btn" onclick="toggleFamily(event)">
+
+      <button class="family-btn" type="button" onclick="toggleFamily(this)">
         FAMILY SITE ▼
       </button>
 
-      <div class="family-list" id="familyList">
+      <div class="family-list">
         <a href="https://sin13248920.github.io/Seo-Architecture/" target="_blank">
           서오건축
         </a>
       </div>
+
     </div>
 
   </div>
@@ -63,6 +65,7 @@
   font-size: 11px;
   color: #555;
   letter-spacing: -0.2px;
+  line-height: 1.4;
 }
 
 /* RIGHT */
@@ -70,7 +73,7 @@
   position: relative;
 }
 
-/* 2015 느낌 버튼 (각진 박스) */
+/* 버튼 (2015 느낌) */
 .family-btn {
   background: #e6e9ee;
   border: 1px solid #b7bec8;
@@ -80,7 +83,7 @@
   cursor: pointer;
 }
 
-/* 드롭다운 박스 */
+/* 드롭다운 */
 .family-list {
   display: none;
   position: absolute;
@@ -94,7 +97,7 @@
   z-index: 100;
 }
 
-/* 열림 */
+/* 열림 상태 */
 .family-list.show {
   display: block;
 }
@@ -119,14 +122,18 @@
 </style>
 
 <script>
-function toggleFamily(e) {
-  e.stopPropagation();
+/* 안전한 토글 (ID 없음 → 충돌 방지) */
+function toggleFamily(btn) {
+  const wrap = btn.parentElement;
+  const list = wrap.querySelector(".family-list");
 
-  const list = document.getElementById("familyList");
   list.classList.toggle("show");
 }
 
+/* 바깥 클릭 시 전체 닫기 */
 document.addEventListener("click", function () {
-  document.getElementById("familyList").classList.remove("show");
+  document.querySelectorAll(".family-list").forEach(el => {
+    el.classList.remove("show");
+  });
 });
 </script>
