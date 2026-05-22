@@ -1,7 +1,7 @@
 <div class="footer">
   <div class="footer-inner">
 
-    <!-- LEFT -->
+    <!-- 왼쪽 영역 -->
     <div class="footer-left">
       <img class="footer-logo"
            src="https://drive.google.com/thumbnail?id=1Sr1eMqd6h21-HVOj93iMOohGJ1rAx3or&sz=w500">
@@ -13,18 +13,18 @@
       </div>
     </div>
 
-    <!-- RIGHT (Family Site) -->
+    <!-- 오른쪽 Family Site (이미지 링크) -->
     <div class="family-wrap">
+      <div class="family-title">Family Site</div>
 
-      <button class="family-btn" type="button" onclick="toggleFamily(this)">
-        FAMILY SITE ▼
-      </button>
+      <a class="family-link"
+         href="https://sin13248920.github.io/Seo-Architecture/"
+         target="_blank">
 
-      <div class="family-list">
-        <a href="https://sin13248920.github.io/Seo-Architecture/" target="_blank">
-          서오건축
-        </a>
-      </div>
+        <img class="family-img"
+             src="https://drive.google.com/thumbnail?id=1zgxyP6c1xb8P5Xt4SdpZ8JtIGloFmNba&sz=w500"
+             alt="서오건축">
+      </a>
 
     </div>
 
@@ -34,106 +34,67 @@
 <style>
 .footer {
   width: 100%;
-  background: #f2f4f7;
-  border-top: 2px solid #c9ced6;
-  font-family: "Malgun Gothic", Arial, sans-serif;
+  border-top: 1px solid #e5e5e5;
+  background: #fff;
 }
 
 .footer-inner {
   max-width: 1100px;
   margin: 0 auto;
-  padding: 22px 18px;
+  padding: 25px 20px;
 
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
 }
 
-/* LEFT */
+/* 왼쪽 */
 .footer-left {
   text-align: left;
 }
 
 .footer-logo {
-  height: 24px;
-  margin-bottom: 10px;
-  opacity: 0.9;
+  height: 26px;
+  margin-bottom: 12px;
+  opacity: 0.85;
 }
 
 .footer-text p {
-  margin: 3px 0;
-  font-size: 11px;
-  color: #555;
-  letter-spacing: -0.2px;
-  line-height: 1.4;
+  margin: 4px 0;
+  font-size: 12px;
+  color: #666;
+  line-height: 1.5;
 }
 
-/* RIGHT */
+/* 오른쪽 */
 .family-wrap {
-  position: relative;
+  text-align: right;
 }
 
-/* 버튼 (2015 느낌) */
-.family-btn {
-  background: #e6e9ee;
-  border: 1px solid #b7bec8;
-  padding: 6px 10px;
-  font-size: 11px;
-  color: #333;
-  cursor: pointer;
+.family-title {
+  font-size: 12px;
+  color: #888;
+  margin-bottom: 6px;
 }
 
-/* 드롭다운 */
-.family-list {
-  display: none;
-  position: absolute;
-  right: 0;
-  top: 32px;
+/* 이미지 링크 */
+.family-link {
+  display: inline-block;
+}
 
-  width: 140px;
+.family-img {
+  height: 40px;   /* 필요하면 조절 */
+  width: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
   background: #fff;
-  border: 1px solid #b7bec8;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-  z-index: 100;
+  padding: 4px;
+
+  transition: all 0.2s ease;
 }
 
-/* 열림 상태 */
-.family-list.show {
-  display: block;
-}
-
-/* 링크 */
-.family-list a {
-  display: block;
-  padding: 7px 10px;
-  font-size: 11px;
-  color: #333;
-  text-decoration: none;
-  border-bottom: 1px solid #eee;
-}
-
-.family-list a:last-child {
-  border-bottom: none;
-}
-
-.family-list a:hover {
-  background: #f0f2f5;
+.family-img:hover {
+  transform: scale(1.03);
+  background: #f5f5f5;
 }
 </style>
-
-<script>
-/* 안전한 토글 (ID 없음 → 충돌 방지) */
-function toggleFamily(btn) {
-  const wrap = btn.parentElement;
-  const list = wrap.querySelector(".family-list");
-
-  list.classList.toggle("show");
-}
-
-/* 바깥 클릭 시 전체 닫기 */
-document.addEventListener("click", function () {
-  document.querySelectorAll(".family-list").forEach(el => {
-    el.classList.remove("show");
-  });
-});
-</script>
